@@ -5,6 +5,7 @@ namespace WinFormsApp6
     internal class ApplicationContext : DbContext
     {
         public DbSet<Game> Games => Set<Game>();
+        public DbSet<Studio> Studios => Set<Studio>();
         public ApplicationContext()
         {
             Database.EnsureDeleted();

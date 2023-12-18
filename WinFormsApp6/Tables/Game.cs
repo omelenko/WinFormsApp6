@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace WinFormsApp6
 {
-    internal class Game
+    public class Game
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string? Studio { get; set; }
+        public Studio? Studio { get; set; }
         public string? Style { get; set; }
         public string? ReleaseDate { get; set; }
         public string? Gamemode { get; set; }

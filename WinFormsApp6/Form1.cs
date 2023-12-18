@@ -17,9 +17,9 @@ namespace WinFormsApp6
         private void Form1_Load(object sender, EventArgs e)
         {
             db = new ApplicationContext();
-            Game gameA = new Game { Id = 1, Name = "Minecraft", Studio = "Mojang", Style = "Sandbox", ReleaseDate = "18/09/2011", Gamemode = "одно-багатокористувацький", Sells = 300000000 };
-            Game gameB = new Game { Id = 2, Name = "The Binding of Isaac", Studio = "Nicalis", Style = "Rogue-like", ReleaseDate = "28/09/2011", Gamemode = "одно-багатокористувацький", Sells = 2000000 };
-            Game gameC = new Game { Id = 3, Name = "Devil May Cry 3", Studio = "Capcom", Style = "Slasher", ReleaseDate = "17/02/2005", Gamemode = "однокористувацький", Sells = 1300000 };
+            Game gameA = new Game { Id = 1, Name = "Minecraft", Studio = new Studio { Name = "Mojang" }, Style = "Sandbox", ReleaseDate = "18/09/2011", Gamemode = "одно-багатокористувацький", Sells = 300000000 };
+            Game gameB = new Game { Id = 2, Name = "The Binding of Isaac", Studio = new Studio { Name = "Nicalis" }, Style = "Rogue-like", ReleaseDate = "28/09/2011", Gamemode = "одно-багатокористувацький", Sells = 2000000 };
+            Game gameC = new Game { Id = 3, Name = "Devil May Cry 3", Studio = new Studio { Name = "Capcom" }, Style = "Slasher", ReleaseDate = "17/02/2005", Gamemode = "однокористувацький", Sells = 1300000 };
             db.Games.Add(gameA);
             db.Games.Add(gameB);
             db.Games.Add(gameC);
@@ -39,7 +39,7 @@ namespace WinFormsApp6
                     }
                 case 1:
                     {
-                        dataGridView1.DataSource = db.Games.Where(g => g.Studio == textBox1.Text).ToList();
+                        dataGridView1.DataSource = db.Games.Where(g => g.Studio!.ToString() == textBox1.Text).ToList();
                         break;
                     }
                 case 2:
@@ -104,17 +104,39 @@ namespace WinFormsApp6
 
         private void button8_Click(object sender, EventArgs e)
         {
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву, студію, стиль, дату релізу(дд/мм/рррр), режим гри(одно/багатокористувацький), кількість проданих копій гри через кому. Наприклад: Назва,Студія,Стиль...", "Ввід даних", "", -1, -1);
-            List<string> newobject = input.Split(",").ToList<string>();
-            int tempid = db.Games.ToList().IndexOf(db.Games.ToList().Last()) + 2;
-            try
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Виберіть що ви хочете додати Гру чи Студію", "Ввід даних", "Гру", -1, -1);
+            if (input == "Гру")
             {
-                db.Games.Add(new Game { Id = tempid, Name = newobject[0], Studio = newobject[1], Style = newobject[2], ReleaseDate = newobject[3], Gamemode = newobject[4], Sells = int.Parse(newobject[5]) });
-                db.SaveChanges();
+                string input1 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву, студію, стиль, дату релізу(дд/мм/рррр), режим гри(одно/багатокористувацький), кількість проданих копій гри через кому. Наприклад: Назва,Студія,Стиль...", "Ввід даних", "", -1, -1);
+                List<string> newobject = input1.Split(",").ToList<string>();
+                int tempid = db.Games.ToList().IndexOf(db.Games.ToList().Last()) + 2;
+                try
+                {
+                    db.Games.Add(new Game { Id = tempid, Name = newobject[0], Studio = new Studio { Name = newobject[1] }, Style = newobject[2], ReleaseDate = newobject[3], Gamemode = newobject[4], Sells = int.Parse(newobject[5]) });
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Помилка. " + ex.Message); //Don't Starve,Studio,Sandbox,23/11/2006,одно-багатокористувацький,1
+                }
             }
-            catch(Exception ex)
+            else if(input == "Студію")
             {
-                MessageBox.Show("Помилка. " + ex.Message); //Don't Starve,Studio,Sandbox,23/11/2006,одно-багатокористувацький,1
+                string input2 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву студії, країни де є студія через тире, міста де розташувуються філії студії через тире через кому. Наприклад: Назва,Країна-Країна-Країна,Місто-Місто-Місто...", "Ввід даних", "", -1, -1);
+                List<string> newobject = input2.Split(",").ToList<string>();
+                List<string> countries = newobject[1].Split("-").ToList<string>();
+                List<string> cities = newobject[2].Split("-").ToList<string>();
+                int tempid = db.Studios.ToList().IndexOf(db.Studios.ToList().Last()) + 2;
+                try
+                {
+                    db.Studios.Add(new Studio { Id = tempid, Name = newobject[0], Countries = countries, Filias = cities});
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Помилка. " + ex.Message); 
+                }
+
             }
         }
 
@@ -124,32 +146,98 @@ namespace WinFormsApp6
             int productid;
             bool success = int.TryParse(input, out productid);
 
-            string input1 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву, студію, стиль, дату релізу(дд/мм/рррр), режим гри(одно/багатокористувацький), кількість проданих копій гри через кому. Наприклад: Назва,Студія,Стиль...", "Редагування даних", "", -1, -1);
-            List<string> newobject = input1.Split(",").ToList<string>(); 
-            var query = db.Games.Where(g => g.Id == productid).ToList();
-            foreach (var a in query)
+            string input1 = Microsoft.VisualBasic.Interaction.InputBox("Виберіть що ви хочете редагувати Гру чи Студію", "Редагування даних", "Гру", -1, -1);
+            if (input == "Гру")
             {
-                db.Games.Remove(a);
-                db.SaveChanges();
-            }
-            db.Games.Add(new Game { Id = productid, Name = newobject[0], Studio = newobject[1], Style = newobject[2], ReleaseDate = newobject[3], Gamemode = newobject[4], Sells = int.Parse(newobject[5]) });
-            db.SaveChanges();
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву та студію гри яку ви хочете видалити через кому. Наприклад: Назва,Студія", "Видалення даних", "Minecraft,Mojang", -1, -1);
-            var query = db.Games.Where(g => (g.Name + "," + g.Studio) == input).ToList();
-            var success = MessageBox.Show("Ви впевнені що хочете видалити цю гру?","Запит", MessageBoxButtons.YesNo);
-            if(success == DialogResult.Yes)
-            {
+                string input2 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву, студію, стиль, дату релізу(дд/мм/рррр), режим гри(одно/багатокористувацький), кількість проданих копій гри через кому. Наприклад: Назва,Студія,Стиль...", "Редагування даних", "", -1, -1);
+                List<string> newobject = input2.Split(",").ToList<string>();
+                var query = db.Games.Where(g => g.Id == productid).ToList();
                 foreach (var a in query)
                 {
                     db.Games.Remove(a);
                     db.SaveChanges();
                 }
+                db.Games.Add(new Game { Id = productid, Name = newobject[0], Studio = new Studio { Name = newobject[1] }, Style = newobject[2], ReleaseDate = newobject[3], Gamemode = newobject[4], Sells = int.Parse(newobject[5]) });
+                db.SaveChanges();
+            }
+            else if (input == "Студію")
+            {
+                string input2 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву студії, країни де є студія через тире, міста де розташувуються філії студії через тире через кому. Наприклад: Назва,Країна-Країна-Країна,Місто-Місто-Місто...", "Редагування даних", "", -1, -1);
+                List<string> newobject = input2.Split(",").ToList<string>();
+                List<string> countries = newobject[1].Split("-").ToList<string>();
+                List<string> cities = newobject[2].Split("-").ToList<string>();
+                var query = db.Studios.Where(g => g.Id == productid).ToList();
+                foreach (var a in query)
+                {
+                    db.Studios.Remove(a);
+                    db.SaveChanges();
+                }
+                db.Studios.Add(new Studio { Id = productid, Name = newobject[0], Countries = countries, Filias = cities });
+                db.SaveChanges();
+
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Виберіть що ви хочете видалити Гру чи Студію", "Видалення даних", "Гру", -1, -1);
+            if (input == "Гру")
+            {
+                string input1 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву та студію гри яку ви хочете видалити через кому. Наприклад: Назва,Студія", "Видалення даних", "Minecraft,Mojang", -1, -1);
+                var query = db.Games.Where(g => (g.Name + "," + g.Studio) == input1).ToList();
+                var success = MessageBox.Show("Ви впевнені що хочете видалити цю гру?", "Запит", MessageBoxButtons.YesNo);
+                if (success == DialogResult.Yes)
+                {
+                    foreach (var a in query)
+                    {
+                        db.Games.Remove(a);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            else if (input == "Студію")
+            {
+                string input1 = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву студії яку ви хочете видалити.", "Видалення даних", "", -1, -1);
+                var query = db.Studios.Where(g => g.Name == input1).ToList();
+                var success = MessageBox.Show("Ви впевнені що хочете видалити цю студію?", "Запит", MessageBoxButtons.YesNo);
+                if(success == DialogResult.Yes)
+                {
+                    foreach(var a in query)
+                    {
+                        db.Studios.Remove(a);
+                        db.SaveChanges();
+                    }
+                }
             }
 
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = db.Games.Select(s => new { Name = "однокористувацькі", Count = db.Games.Where(b => b.Gamemode!.Contains("одно")).Count() }).ToList();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = db.Games.Select(s => new { Name = "багатокористувацькі", Count = db.Games.Where(b => b.Gamemode!.Contains("багато")).Count() }).ToList();
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву стилю.", "Ввід даних", "", -1, -1);
+            dataGridView1.DataSource = db.Studios.Where(b => b.Name == db.Games.Where(s => s.Style == input && s.Sells == db.Games.Max(d => d.Sells)).First().Studio!.Name).ToList();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву стилю.", "Ввід даних", "", -1, -1);
+            dataGridView1.DataSource = db.Games.OrderByDescending(g => g.Sells).Where(g => g.Style == input).Take(5).ToList();
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть назву стилю.", "Ввід даних", "", -1, -1);
+            dataGridView1.DataSource = db.Games.OrderBy(g => g.Sells).Where(g => g.Style == input).Take(5).ToList();
         }
     }
 }

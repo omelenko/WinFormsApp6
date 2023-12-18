@@ -41,6 +41,11 @@
             button8 = new Button();
             button9 = new Button();
             button10 = new Button();
+            button11 = new Button();
+            button12 = new Button();
+            button13 = new Button();
+            button14 = new Button();
+            button15 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -81,7 +86,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(12, 374);
+            button2.Location = new Point(9, 365);
             button2.Name = "button2";
             button2.Size = new Size(131, 23);
             button2.TabIndex = 4;
@@ -91,7 +96,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(12, 403);
+            button3.Location = new Point(9, 394);
             button3.Name = "button3";
             button3.Size = new Size(131, 23);
             button3.TabIndex = 5;
@@ -101,7 +106,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(149, 374);
+            button4.Location = new Point(146, 365);
             button4.Name = "button4";
             button4.Size = new Size(184, 23);
             button4.TabIndex = 6;
@@ -111,7 +116,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(149, 403);
+            button5.Location = new Point(146, 394);
             button5.Name = "button5";
             button5.Size = new Size(184, 23);
             button5.TabIndex = 7;
@@ -121,9 +126,9 @@
             // 
             // button6
             // 
-            button6.Location = new Point(339, 374);
+            button6.Location = new Point(336, 365);
             button6.Name = "button6";
-            button6.Size = new Size(147, 23);
+            button6.Size = new Size(124, 23);
             button6.TabIndex = 8;
             button6.Text = "Топ-3 популярність";
             button6.UseVisualStyleBackColor = true;
@@ -131,9 +136,9 @@
             // 
             // button7
             // 
-            button7.Location = new Point(339, 403);
+            button7.Location = new Point(336, 394);
             button7.Name = "button7";
-            button7.Size = new Size(147, 23);
+            button7.Size = new Size(137, 23);
             button7.TabIndex = 9;
             button7.Text = "Топ-3 непопулярність";
             button7.UseVisualStyleBackColor = true;
@@ -169,11 +174,66 @@
             button10.UseVisualStyleBackColor = true;
             button10.Click += button10_Click;
             // 
+            // button11
+            // 
+            button11.Location = new Point(479, 394);
+            button11.Name = "button11";
+            button11.Size = new Size(131, 23);
+            button11.TabIndex = 13;
+            button11.Text = "Кільк. однокор. ігор";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(466, 365);
+            button12.Name = "button12";
+            button12.Size = new Size(135, 23);
+            button12.TabIndex = 14;
+            button12.Text = "Кільк. багатокор. ігор";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(9, 423);
+            button13.Name = "button13";
+            button13.Size = new Size(206, 23);
+            button13.TabIndex = 15;
+            button13.Text = "Стиль з макс. кільк. проданих ігор";
+            button13.UseVisualStyleBackColor = true;
+            button13.Click += button13_Click;
+            // 
+            // button14
+            // 
+            button14.Location = new Point(9, 452);
+            button14.Name = "button14";
+            button14.Size = new Size(286, 23);
+            button14.TabIndex = 16;
+            button14.Text = "Топ-5 ігор за макс. кільк. продаж. певного стилю";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += button14_Click;
+            // 
+            // button15
+            // 
+            button15.Location = new Point(301, 452);
+            button15.Name = "button15";
+            button15.Size = new Size(279, 23);
+            button15.TabIndex = 17;
+            button15.Text = "Топ-5 ігор за мін. кільк. продаж. певного стилю";
+            button15.UseVisualStyleBackColor = true;
+            button15.Click += button15_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 486);
+            Controls.Add(button15);
+            Controls.Add(button14);
+            Controls.Add(button13);
+            Controls.Add(button12);
+            Controls.Add(button11);
             Controls.Add(button10);
             Controls.Add(button9);
             Controls.Add(button8);
@@ -210,5 +270,10 @@
         private Button button8;
         private Button button9;
         private Button button10;
+        private Button button11;
+        private Button button12;
+        private Button button13;
+        private Button button14;
+        private Button button15;
     }
 }
